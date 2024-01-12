@@ -633,9 +633,11 @@ const Details = () => {
                         </span>
                         Remplissez les champs suivants pour valider le formulaire :
                         <ul>
-                            {requiredFields.map((field) => (
-                                <li key={field}>{field}</li>
-                            ))}
+                            {requiredFields
+                                .filter((field) => formData[field] === '') // Filtrer les champs vides seulement
+                                .map((field) => (
+                                    <li key={field}>{field}</li>
+                                ))}
                         </ul>
                     </div>
                 </div>
