@@ -18,6 +18,7 @@ import {
     faRoad,
     faTachometerAlt,
     faHeading,
+    faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -61,12 +62,67 @@ const Details = () => {
         }
     };
 
+    const [showError, setShowError] = useState(false);
+    const [requiredFields, setRequiredFields] = useState([
+        'marque',
+        'anneeModele',
+        'kilometrage',
+        'puissanceFiscale',
+        'typeCarburant',
+        'boiteVitesses',
+        'etat',
+        'origine',
+        'nombrePortes',
+        'premiereMain',
+        'prix',
+        'titreAnnonce',
+        'texteAnnonce',
+    ]); // Liste des champs requis
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Traiter les données du formulaire ici
-        console.log('Données soumises:', formData);
-    };
 
+        // Vérifiez si les champs obligatoires sont vides
+        const emptyFields = requiredFields.filter((field) => formData[field] === '');
+        // Vérifier si les champs obligatoires sont vides
+        if (
+            formData.marque === '' ||
+            formData.anneeModele === '' ||
+            formData.kilometrage === '' ||
+            formData.puissanceFiscale === '' ||
+            formData.typeCarburant === '' ||
+            formData.boiteVitesses === '' ||
+            formData.etat === '' ||
+            formData.origine === '' ||
+            formData.nombrePortes === '' ||
+            formData.premiereMain === '' ||
+            formData.prix === '' ||
+            formData.titreAnnonce === '' ||
+            formData.texteAnnonce === ''
+        ) {
+            // Afficher le pop-up d'erreur
+            setShowError(true);
+        } else {
+            // Traiter les données du formulaire ici, car tous les champs obligatoires sont remplis
+            console.log('Données soumises:', formData);
+            // Traiter les données du formulaire ici, car tous les champs obligatoires sont remplis
+            console.log('Données soumises:', formData);
+
+            // Réinitialiser le formulaire si nécessaire
+            // setFormData({
+            //     marque: '',
+            //     anneeModele: '',
+            //     // ...
+            // });
+
+            // Masquer le pop-up d'erreur si nécessaire
+            // setShowError(false);
+        }
+
+    };
+    const handleCloseError = () => {
+        setShowError(false);
+    };
     const [typeCarburant, setTypeCarburant] = useState('');
     const [boiteVitesses, setBoiteVitesses] = useState('');
     const [etat, setEtat] = useState('');
@@ -427,40 +483,40 @@ const Details = () => {
                 <p>Une annonce avec un prix exacte et une description bien détaillée a 10 fois plus de visibilité</p>
 
                 <div className="form-group">
-    <FontAwesomeIcon icon={faTag} />
-    <label> Prix</label>
-    <input
-        type="number"
-        name="prix"
-        value={formData.prix}
-        onChange={handleFormData}
-        placeholder="DH"
-        className="form-control"
-    />
-</div>
+                    <FontAwesomeIcon icon={faTag} />
+                    <label> Prix</label>
+                    <input
+                        type="number"
+                        name="prix"
+                        value={formData.prix}
+                        onChange={handleFormData}
+                        placeholder="DH"
+                        className="form-control"
+                    />
+                </div>
 
-<div className="form-group">
-    <FontAwesomeIcon icon={faHeading} />
-    <label> *Titre de l'annonce</label>
-    <input
-        type="text"
-        name="titreAnnonce"
-        value={formData.titreAnnonce}
-        onChange={handleFormData}
-        className="form-control"
-    />
-</div>
+                <div className="form-group">
+                    <FontAwesomeIcon icon={faHeading} />
+                    <label> *Titre de l'annonce</label>
+                    <input
+                        type="text"
+                        name="titreAnnonce"
+                        value={formData.titreAnnonce}
+                        onChange={handleFormData}
+                        className="form-control"
+                    />
+                </div>
 
-<div className="form-group">
-    <FontAwesomeIcon icon={faAlignLeft} />
-    <label> Texte de l'annonce</label>
-    <textarea
-        name="texteAnnonce"
-        value={formData.texteAnnonce}
-        onChange={handleFormData}
-        className="form-control"
-    ></textarea>
-</div>
+                <div className="form-group">
+                    <FontAwesomeIcon icon={faAlignLeft} />
+                    <label> Texte de l'annonce</label>
+                    <textarea
+                        name="texteAnnonce"
+                        value={formData.texteAnnonce}
+                        onChange={handleFormData}
+                        className="form-control"
+                    ></textarea>
+                </div>
 
 
                 <h1>Plus de détails</h1>
@@ -569,6 +625,21 @@ const Details = () => {
 
                 <button type="submit" className="btn-submit">Envoyer</button>
             </form>
+            {showError && (
+                <div className="overlay">
+                    <div className="popup-error">
+                        <span className="close-icon" onClick={handleCloseError}>
+                            <FontAwesomeIcon icon={faTimes} /><br />
+                        </span>
+                        Remplissez les champs suivants pour valider le formulaire :
+                        <ul>
+                            {requiredFields.map((field) => (
+                                <li key={field}>{field}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
